@@ -50,7 +50,7 @@ Now onto the Windows system. This phase is where everything comes together. I am
 
    I used this command to install my agent named win-endpoint onto my virtualized Windows. Afterwards, a simple NET START WazuhSvc runs the agent. My Windows is now officially on my Wazuh Dashboard.
 
-   ![Wazuh Agent Successfully Loading](images/image1.png)
+   ![Wazuh Agent Successfully Loading](images/image5.png)
 
    ![Windows System on Wazuh Dashboard](images/image4.png)
 
