@@ -24,4 +24,4 @@ Reading about detection is not the same as watching your own SIEM light up. This
 
 *Follow along — new projects are added as they're completed.*
 
-*Check out my SOC Home Lab —— [AdhikariAditya/SOC-Home-Lab](https://github.com/AdhikariAditya/SOC-Home-Lab)*
+*Check out my File Integrity Manager —— [AdhikariAditya/FileIntegrityManager](https://github.com/AdhikariAditya/FileIntegrityManager)*
