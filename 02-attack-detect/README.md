@@ -14,9 +14,9 @@ Just like how I did initially when setting my home lab, I once again had to set 
 
 ## Phase 1: Attacks
 
-| Number | Technique | ATT\&CK ID | Tactic | Status | Link |
-| \- | \- | \- | \- | \- | \- |  
-| 1 | PowerShell(encoded/obfuscated execution) | T1059.001 | Execution  | In Progress | TBA |
+| Number | Technique | ATT\&CK ID | Tactic | Status |
+| - | - | - | - | - | - |  
+| 1 | PowerShell(encoded/obfuscated execution) | T1059.001 | Execution  | In Progress |
 
 Follow along as I add more attacks.
 
