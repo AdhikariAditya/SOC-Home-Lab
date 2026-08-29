@@ -9,11 +9,7 @@ Impacket is a library which uses network protocols like Server Message Block (SM
 
 These are exactly what Windows itself uses to communicate over a network. I can use this library to speak these protocols and then execute any command I want using the Windows Management Instrumentation (WMI) – a system that allows users to query and manage Windows computers which allows me to get a shell from which I could interact with the system. This attack will let me gain access to the Windows system for my future attacks.
 
-<<<<<<< HEAD
 ![Image of Kali Linux connecting to Windows](images/image3.png)
-=======
-![Image of Kali Linux connecting to Windows](02-attack-detect/Attack 0: Remote Access/images/image3.png)
->>>>>>> 8d8f7936f64d0ab69eab61593845b68d2b53b6e7
 
 For the purpose of this attack, I had to change a lot of settings in order to make my Kali Linux connect. In a normal attack, this is very unlikely to happen. But for the sake of my learning, I changed a lot of rules:
 
