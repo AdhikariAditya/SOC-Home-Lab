@@ -18,8 +18,7 @@ Just like how I did initially when setting my home lab, I once again had to set 
 | - | - | - | - |
 | 0 | Remote Access | T1047 | Execution  |  
 | 1 | System Information Discovery | T1082 | Discovery |  
-| 2 | PowerShell as a surface | T1059.001 + T1105 + T1562.001 |   
-Execution + Command and Control + Defense Evasion |  
+| 2 | PowerShell as a surface | T1059.001 + T1105 + T1562.001 | Execution + Command and Control + Defense Evasion |  
 | 3 | LSASS Credential Dumping | T1003.001 | Credential Access |   
 | 4 | Scheduled Task | T1053.005 | Persistence |  
 | 5 | Indicator Removal | T1070 | Defense Evasion |
