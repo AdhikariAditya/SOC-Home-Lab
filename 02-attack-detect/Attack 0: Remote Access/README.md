@@ -9,7 +9,11 @@ Impacket is a library which uses network protocols like Server Message Block (SM
 
 These are exactly what Windows itself uses to communicate over a network. I can use this library to speak these protocols and then execute any command I want using the Windows Management Instrumentation (WMI) – a system that allows users to query and manage Windows computers which allows me to get a shell from which I could interact with the system. This attack will let me gain access to the Windows system for my future attacks.
 
+<<<<<<< HEAD
+![Image of Kali Linux connecting to Windows](images/image3.png)
+=======
 ![Image of Kali Linux connecting to Windows](02-attack-detect/Attack 0: Remote Access/images/image3.png)
+>>>>>>> 8d8f7936f64d0ab69eab61593845b68d2b53b6e7
 
 For the purpose of this attack, I had to change a lot of settings in order to make my Kali Linux connect. In a normal attack, this is very unlikely to happen. But for the sake of my learning, I changed a lot of rules:
 
@@ -37,17 +41,17 @@ The settings are the only ones I changed and they let me connect with Windows, w
 
 Now, with us connected, let’s see the dashboard.
 
-![Image of Kali IP on Wazuh Dashboard](02-attack-detect/Attack 0: Remote Access/images/image1.png)
+![Image of Kali IP on Wazuh Dashboard](images/image1.png)
 
 There it is, our Kali Linux IP has been logged as one that remotely connected to our Windows endpoint, through NTLM and with elevated privileges. Our Wazuh has successfully seen our remote logon, our SIEM has caught the logon and authentication. Now let's explore by typing in a few basic commands.
 
-![Image of different commands being run](02-attack-detect/Attack 0: Remote Access/images/image4.png)
+![Image of different commands being run](images/image4.png)
 
 Interestingly enough, my SIEM did not alert me on the commands. Now this seems like a lapse in the SIEM until you realize that if an actual administrator was remotely logging, our dashboard would bombard us with false-positives if it flagged every process that came through remote logons. 
 
 So we have to work around this. We have to flag any command that is run by a user who connects through WMI. Most legitimate administrators use Remote Desktop Protocol (RDP), a WMI connection is rare and if it appears, it should be flagged and looked over once by the security team. So this is where my first rule comes in, something that informs Wazuh that processes whose parent is WmiPrvSE.exe – the parent process of commands spawned from a remote WMI connection.
 
-![Image of custom ruleset](02-attack-detect/Attack 0: Remote Access/images/image7.png)
+![Image of custom ruleset](images/image7.png)
 
 Now to explain the rule I added onto my system:
 
@@ -59,16 +63,16 @@ Now to explain the rule I added onto my system:
 
 4. \<field\> is used to guide Wazuh to the field of parent image and check whether the parent process is WmiPrvSE.exe inside win.eventdata.parentImage.
 
-5. \<mitre\> is used to give our new custom rule its proper ATT\&CK ID.
+5. \<mitre\> is used to give our new custom rule its proper ATT&CK ID.
 
 Now let’s log back onto Kali and mess around with the Windows system.  
-![Image of rerunning commands](02-attack-detect/Attack 0: Remote Access/images/image5.png)
+![Image of rerunning commands](images/image5.png)
 
 Checking back in with the Wazuh Dashboard and there we have it:
 
-![Image of dashboard showing new ruleset](02-attack-detect/Attack 0: Remote Access/images/image2.png)
+![Image of dashboard showing new ruleset](images/image2.png)
 
-![Extended image showing new ruleset](02-attack-detect/Attack 0: Remote Access/images/image6.png)
+![Extended image showing new ruleset](images/image6.png)
 
 Our rule has been successfully logged and alerted to us on the dashboard. 
 
