@@ -1,77 +1,30 @@
-# Attack 0: Remote Access
+# Attacking my personal Security Operations Center (SOC)
 
-ATT&CK ID: T1047  
-Tactic: Execution
+## Introduction
 
-Let's now go forward with our attacks. However to do this, we must now gain remote control of the Windows endpoint through our Linux machine. Hence our attack 0 will be gaining access. We shall do this through a command – or more aptly, a python library – called impacket. 
+Previously, I built my SOC by installing Wazuh SIEM on an Ubuntu virtual machine and installing a Wazuh Agent on a Windows endpoint fitted with Sysmon — full details can be found [here](https://github.com/AdhikariAditya/SOC-Home-Lab/tree/main/01-lab-build). 
 
-Impacket is a library which uses network protocols like Server Message Block (SMB) – used to share files, printers and other resources between computers –, NT LAN Manager (NTLM) – used to authenticate user and computer identities over networks – and other various protocols. 
+But setting a SIEM up is only half the picture, the other half would be actually using it. So that is what my plan is here: the second part of my SOC home lab will involve attacking my Windows endpoint with a Kali Linux virtual machine, understanding all the various logs that arrive at my SIEM dashboard and finally implementing any custom rules to cover any attacks that the SIEM might have missed or did not alert properly.
 
-These are exactly what Windows itself uses to communicate over a network. I can use this library to speak these protocols and then execute any command I want using the Windows Management Instrumentation (WMI) – a system that allows users to query and manage Windows computers which allows me to get a shell from which I could interact with the system. This attack will let me gain access to the Windows system for my future attacks.
+## Phase 0: Lab Environment
 
-![Image of Kali Linux connecting to Windows][image1]
+Just like how I did initially when setting my home lab, I once again had to set up a Kali Linux machine. Kali Linux is vital for this part of my project since it is the machine I will use as an attack platform. I will pretend to be an attacker who already has a compromised system – in my case the Windows endpoint – and conduct attacks.  Essentially, my Windows endpoint has already been breached by the Kali Linux machine. The good part about this is that I had already set up Kali Linux when getting into cybersecurity. But for the sake of teaching anyone who might not already have it — simply download the ISO from the official Kali website and boot it up the way you would boot any other virtualized system. I ensured that the host-only network adapter was configured properly and my Kali Linux was ready to be used.
 
-For the purpose of this attack, I had to change a lot of settings in order to make my Kali Linux connect. In a normal attack, this is very unlikely to happen. But for the sake of my learning, I changed a lot of rules:
+![Screenshot of all 3 virtual machines](images/image1)
 
-1. Opened ports 135 and 445 – the exact ones responsible for connecting with impacket.
+## Phase 1: Attacks
 
-```
-New-NetFirewallRule -DisplayName "Allow RPC EPM 135 (lab)" -Direction Inbound -Protocol TCP -LocalPort 135 -Action Allow -Profile Any
+| Number | Technique | ATT&CK ID | Tactic |  
+| - | - | - | - |
+| 0 | Remote Access | T1047 | Execution  |  
+| 1 | System Information Discovery | T1082 | Discovery |  
+| 2 | PowerShell as a surface | T1059.001 + T1105 + T1562.001 | Execution + Command and Control + Defense Evasion |  
+| 3 | LSASS Credential Dumping | T1003.001 | Credential Access |   
+| 4 | Scheduled Task | T1053.005 | Persistence |  
+| 5 | Indicator Removal | T1070 | Defense Evasion |
 
-New-NetFirewallRule -DisplayName "Allow SMB 445 (lab)" -Direction Inbound -Protocol TCP -LocalPort 445 -Action Allow -Profile Any
-```
+All of these attacks tell a clear story. Attack 0 where an attacker first gains remote access, the following attack shows how he surveys the system he is on. Proceeding to attack 2, the attacker tests the limits of the breached PowerShell and steals credentials in attack 3. Finally in attacks 4 and 5, the attacker ensures that they have continued control over the system and that no one can notice their presence.
 
-2. Opened the ports that Distributed Component Object Model (DCOM) – a piece of software in Windows that allows for components on a system to communicate over a network.
+## Conclusion:
 
-```
-New-NetFirewallRule -DisplayName "Allow DCOM dynamic (lab)" -Direction Inbound -Protocol TCP -LocalPort 49152-65535 -Action Allow -Profile Any
-```
-
-3. Disabled restrictions that make it so that users connecting remotely are stripped of administrative privileges which blocked its connection. This is actually an attack in itself.
-
-```
-New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "LocalAccountTokenFilterPolicy" -Value 1 -PropertyType DWord -Force
-```
-
-The settings are the only ones I changed and they let me connect with Windows, without them no attack and no logs. Do not assume that you can recreate my commands without doing these first.
-
-Now, with us connected, let’s see the dashboard.
-
-![Image of Kali IP on Wazuh Dashboard][image2]
-
-There it is, our Kali Linux IP has been logged as one that remotely connected to our Windows endpoint, through NTLM and with elevated privileges. Our Wazuh has successfully seen our remote logon, our SIEM has caught the logon and authentication. Now let's explore by typing in a few basic commands.
-
-![Image of different commands being run][image3]
-
-Interestingly enough, my SIEM did not alert me on the commands. Now this seems like a lapse in the SIEM until you realize that if an actual administrator was remotely logging, our dashboard would bombard us with false-positives if it flagged every process that came through remote logons. 
-
-So we have to work around this. We have to flag any command that is run by a user who connects through WMI. Most legitimate administrators use Remote Desktop Protocol (RDP), a WMI connection is rare and if it appears, it should be flagged and looked over once by the security team. So this is where my first rule comes in, something that informs Wazuh that processes whose parent is WmiPrvSE.exe – the parent process of commands spawned from a remote WMI connection.
-
-![Image of custom ruleset][image4]
-
-Now to explain the rule I added onto my system:
-
-1. \<group\> just puts labels and groups everything under umbrella terms. You can later use these labels in Wazuh to filter and search, making it easier for you.
-
-2. “id=100001” and “level=12” are self explanatory, they contain the respective ID and threat level of the respective rules. Wazuh gives users id numbers past 100000 for their own custom rules.
-
-3. \<if\_group\> is responsible for filtering out what the group would be. Sysmon logs process creations – like ones in cmd.exe – as event ID one, this gives our SIEM exactly what to look out for.
-
-4. \<field\> is used to guide Wazuh to the field of parent image and check whether the parent process is WmiPrvSE.exe inside win.eventdata.parentImage.
-
-5. \<mitre\> is used to give our new custom rule its proper ATT\&CK ID.
-
-Now let’s log back onto Kali and mess around with the Windows system.  
-![Image of rerunning commands][image5]
-
-Checking back in with the Wazuh Dashboard and there we have it:
-
-![Image of dashboard showing new ruleset][image6]
-
-![Extended image showing new ruleset][image7]
-
-Our rule has been successfully logged and alerted to us on the dashboard. 
-
-A thing to mention is that crafting and troubleshooting this event ID took me a long amount of time. Between checking if we were meant to use Sysmon’s event ID for process creation or Wazuh’s to accidentally write the wrong group name, this was an extremely tedious task. However, in the end it was worth it and my final result is a working custom rule for Wazuh SIEM made by myself.
-
-With attack 0 out of the way, our attacker has gained access to the system. Now with the beginning of attack 1, he will scope out the system he has. Follow along here.
+This is a way for me to develop my blue team abilities by giving me the closest thing I have to a full detection cycle; all the way from generating the telemetry to writing custom rules. I hope you found this helpful, if you have time then please check out my other project, a file integrity manager right [here](https://github.com/AdhikariAditya/FileIntegrityManager).
