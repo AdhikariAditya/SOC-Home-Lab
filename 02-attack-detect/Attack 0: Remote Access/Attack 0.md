@@ -37,17 +37,17 @@ The settings are the only ones I changed and they let me connect with Windows, w
 
 Now, with us connected, let’s see the dashboard.
 
-![Image of Kali IP on Wazuh Dashboard](images/image1)
+![Image of Kali IP on Wazuh Dashboard](images/image1.png)
 
 There it is, our Kali Linux IP has been logged as one that remotely connected to our Windows endpoint, through NTLM and with elevated privileges. Our Wazuh has successfully seen our remote logon, our SIEM has caught the logon and authentication. Now let's explore by typing in a few basic commands.
 
-![Image of different commands being run](images/image4)
+![Image of different commands being run](images/image4.png)
 
 Interestingly enough, my SIEM did not alert me on the commands. Now this seems like a lapse in the SIEM until you realize that if an actual administrator was remotely logging, our dashboard would bombard us with false-positives if it flagged every process that came through remote logons. 
 
 So we have to work around this. We have to flag any command that is run by a user who connects through WMI. Most legitimate administrators use Remote Desktop Protocol (RDP), a WMI connection is rare and if it appears, it should be flagged and looked over once by the security team. So this is where my first rule comes in, something that informs Wazuh that processes whose parent is WmiPrvSE.exe – the parent process of commands spawned from a remote WMI connection.
 
-![Image of custom ruleset](images/image7)
+![Image of custom ruleset](images/image7.png)
 
 Now to explain the rule I added onto my system:
 
@@ -62,13 +62,13 @@ Now to explain the rule I added onto my system:
 5. \<mitre\> is used to give our new custom rule its proper ATT\&CK ID.
 
 Now let’s log back onto Kali and mess around with the Windows system.  
-![Image of rerunning commands](images/image5)
+![Image of rerunning commands](images/image5.png)
 
 Checking back in with the Wazuh Dashboard and there we have it:
 
-![Image of dashboard showing new ruleset](images/image2)
+![Image of dashboard showing new ruleset](images/image2.png)
 
-![Extended image showing new ruleset](images/image6)
+![Extended image showing new ruleset](images/image6.png)
 
 Our rule has been successfully logged and alerted to us on the dashboard. 
 
