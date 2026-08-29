@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Previously, I built my SOC by installing Wazuh SIEM on an Ubuntu virtual machine and installing a Wazuh Agent on a Windows endpoint fitted with Sysmon — full details can be found [here](https://github.com/AdhikariAditya/SOC-Home-Lab/blob/main/01-lab-build/01-lab-build-readme.md). 
+Previously, I built my SOC by installing Wazuh SIEM on an Ubuntu virtual machine and installing a Wazuh Agent on a Windows endpoint fitted with Sysmon — full details can be found [here](https://github.com/AdhikariAditya/SOC-Home-Lab/tree/main/01-lab-build). 
 
 But setting a SIEM up is only half the picture, the other half would be actually using it. So that is what my plan is here: the second part of my SOC home lab will involve attacking my Windows endpoint with a Kali Linux virtual machine, understanding all the various logs that arrive at my SIEM dashboard and finally implementing any custom rules to cover any attacks that the SIEM might have missed or did not alert properly.
 
