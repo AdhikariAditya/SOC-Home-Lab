@@ -16,7 +16,7 @@ Just like how I did initially when setting my home lab, I once again had to set 
 
 | Number | Technique | ATT&CK ID | Tactic |  
 | - | - | - | - |
-| [0](02-attack-detect/Attack 0: Remote Access) | Remote Access | T1047 | Execution  |  
+| [0](<02-attack-detect/Attack 0: Remote Access>) | Remote Access | T1047 | Execution  |  
 | 1 | System Information Discovery | T1082 | Discovery |  
 | 2 | PowerShell as a surface | T1059.001 + T1105 + T1562.001 | Execution + Command and Control + Defense Evasion |  
 | 3 | LSASS Credential Dumping | T1003.001 | Credential Access |   
