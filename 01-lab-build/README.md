@@ -84,4 +84,4 @@ After I went to my dashboard, I saw it clear as day: a high-severity alert that 
 
 ![Encoded command being detected](images/image3.png)
 
-My future plans are simple: use Kali Linux to attack the Windows machine, run real threats inside a safe and controlled environment and see what my SIEM catches – and what it doesn't catch, so that I can write my own rules to detect these gaps. This gives me experience on both sides: offense and defense. My next few updates will be on this exactly. I hope you found this helpful — follow along for more.
+My future plans are simple: use Kali Linux to attack the Windows machine, run real threats inside a safe and controlled environment and see what my SIEM catches – and what it doesn't catch, so that I can write my own rules to detect these gaps. You can find the progress I have made right [here](https://github.com/AdhikariAditya/SOC-Home-Lab/tree/main/02-attack-detect). I hope you found this helpful — follow along for more.
