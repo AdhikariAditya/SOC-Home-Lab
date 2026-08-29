@@ -6,8 +6,8 @@ A hands-on lab series where I build, attack, and defend my own Security Operatio
 
 | # | Project | Status | Summary |
 |---|---------|--------|---------|
-| 1 | [Building the SOC Lab](./01-lab-build/) | Complete | Wazuh SIEM + Sysmon-instrumented Windows 10 endpoint, validated with a live detection of encoded PowerShell execution |
-| 2 | Attack & Detect | In progress | Kali Linux attacker box, real offensive techniques, and custom Wazuh detection rules for what the stock ruleset misses |
+| 1 | [Building the SOC Lab](./01-lab-build/) | Complete | Wazuh SIEM + Sysmon-instrumented Windows 10 endpoint |
+| 2 | [Attack & Detect](./02-attack-detect/) | In progress | Kali Linux attacker box, real offensive techniques, and custom Wazuh detection rules for what the stock ruleset misses |
 
 ## Lab Stack
 
