@@ -18,12 +18,12 @@ Just like how I did initially when setting my home lab, I once again had to set 
 | - | - | - | - |
 | [0](https://github.com/AdhikariAditya/SOC-Home-Lab/tree/main/02-attack-detect/Attack%200%3A%20Remote%20Access) | Remote Access | T1047 | Execution  |  
 | 1 | System Information Discovery | T1082 | Discovery |  
-| 2 | PowerShell as a surface | T1059.001 + T1105 + T1562.001 | Execution + Command and Control + Defense Evasion |  
+| 2 | Downloading Malware | T1105 | Command and Control |  
 | 3 | LSASS Credential Dumping | T1003.001 | Credential Access |   
 | 4 | Scheduled Task | T1053.005 | Persistence |  
 | 5 | Indicator Removal | T1070 | Defense Evasion |
 
-All of these attacks tell a clear story. Attack 0 where an attacker first gains remote access, the following attack shows how he surveys the system he is on. Proceeding to attack 2, the attacker tests the limits of the breached PowerShell and steals credentials in attack 3. Finally in attacks 4 and 5, the attacker ensures that they have continued control over the system and that no one can notice their presence.
+All of these attacks tell a clear story. Attack 0 where an attacker first gains remote access, the following attack shows how he surveys the system he is on. Proceeding to attack 2, the attacker downloads his own files onto the system and steals credentials in attack 3. Finally in attacks 4 and 5, the attacker ensures that they have continued control over the system and that no one can notice their presence.
 
 ## Conclusion:
 
